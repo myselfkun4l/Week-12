@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <string.h> 
+
+struct Student {
+    char name[50];
+    char className[20];
+    int rollNo;
+};
+
+int main() {
+    FILE *fp;
+    int n;
+
+    printf("Enter number of students: ");
+    scanf("%d", &n);
+    getchar(); 
+
+    struct Student students[n];  
+    for(int i = 0; i < n; i++) {
+        printf("\nEnter details of student %d:\n", i + 1);
+
+        printf("Name: ");
+        fgets(students[i].name, sizeof(students[i].name), stdin);
+        students[i].name[strcspn(students[i].name, "\n")] = 0; 
+
+        printf("Class: ");
+        fgets(students[i].className, sizeof(students[i].className), stdin);
+        students[i].className[strcspn(students[i].className, "\n")] = 0; 
+
+        printf("Roll No: ");
+        scanf("%d", &students[i].rollNo);
+        getchar(); 
+    }
+    fp = fopen("students.txt", "w");
+    if(fp == NULL) {
+        printf("Error opening file!\n");
+        return 1;
+    }
+    for(int i = 0; i < n; i++) {
+        fprintf(fp, "Name: %s\nClass: %s\nRoll No: %d\n\n",
+                students[i].name, students[i].className, students[i].rollNo);
+    }
+
+    fclose(fp);
+    printf("\nData has been successfully written to students.txt\n");
+
+    return 0;
+}

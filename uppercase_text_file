@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <ctype.h> 
+
+int main() {
+    char filename[100];
+    FILE *fp;
+    char ch;
+
+    printf("Enter the name of the file: ");
+    scanf("%s", filename);
+
+    fp = fopen(filename, "r+");
+    if(fp == NULL) {
+        printf("Error opening file! Make sure the file exists.\n");
+        return 1;
+    }
+    while((ch = fgetc(fp)) != EOF) {
+        if(islower(ch)) {
+            ch = toupper(ch);
+            fseek(fp, -1, SEEK_CUR);
+            fputc(ch, fp);
+        }
+    }
+
+    fclose(fp); 
+    printf("\nAll content has been converted to uppercase in '%s'\n", filename);
+
+    return 0;
+}
